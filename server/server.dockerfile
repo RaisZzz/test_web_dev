@@ -1,6 +1,6 @@
 FROM node:alpine
 WORKDIR /app
 COPY ./package*.json ./
-RUN npm install
+RUN yarn
 COPY ./ ./
-ENTRYPOINT npm run start:dev
+ENTRYPOINT yarn run start:dev
