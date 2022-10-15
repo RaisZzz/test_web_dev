@@ -28,7 +28,18 @@ module.exports = {
 
   module: {
     rules: [
-      { test: /\.tsx?$/, loader: "awesome-typescript-loader", exclude: /node_modules/ },
+      { 
+        test: /\.tsx?$/, 
+        use: [
+          {
+            loader: 'ts-loader',
+            options: {
+              compilerOptions: {noEmit: false},
+            }
+          }
+        ],
+        exclude: /node_modules/,
+      },
       {
         test: /\.(css|s[ac]ss)$/i,
         use: [
@@ -69,7 +80,6 @@ module.exports = {
       'localhost',
     ],
     historyApiFallback: true,
-    stats: 'errors-only',
     open: true,
     hot: true,
     host: SERVER_WEB_HOST,
