@@ -1,8 +1,13 @@
 import { BadRequestException, Body, Controller, Delete, Get, NotFoundException, Param, ParseIntPipe, Post, Put, Query, Req } from '@nestjs/common';
 import { Dog } from './dog';
+import { DogsService } from './dogs.service';
 
 @Controller('dogs')
 export class DogsController {
+  constructor(
+    private readonly dogsService: DogsService,
+  ) {}
+
   dogs: Dog[] = [
     {
       id: 1,
@@ -22,13 +27,13 @@ export class DogsController {
   ]
 
   @Get()
-  findAll(): Dog[] {
-    return this.dogs;
+  async findAll(): Promise<Dog[]> {
+    return this.dogsService.getAll()
   }
 
   @Get(':id')
-  findById(@Param('id', new ParseIntPipe()) id,): Dog {
-    const dog = this.dogs.find(item => item.id === id);
+  async findById(@Param('id', new ParseIntPipe()) id,): Promise<Dog> {
+    const dog =await this.dogsService.getById(id);
     if (dog) {
       return dog;
     }
@@ -37,14 +42,15 @@ export class DogsController {
 
 
   @Post()
-  Create(@Body() model: Dog): Dog {
-    console.log(model);
-    const dogExist = this.dogs.some(item => item.id === model.id);
-    if (dogExist) {
-      throw new BadRequestException(`dog with id=${model.id} already exist`);
-    }
-    this.dogs.push(model);
-    return model;
+  async Create(@Body() model: Dog): Promise<Dog> {
+    // console.log(model);
+    // const dogExist = this.dogs.some(item => item.id === model.id);
+    // if (dogExist) {
+    //   throw new BadRequestException(`dog with id=${model.id} already exist`);
+    // }
+    // this.dogs.push(model);
+    const dog = await this.dogsService.addDog(model);
+    return dog;
   }
 
   @Delete(':id')
@@ -59,16 +65,12 @@ export class DogsController {
  
   
   
-  @Put()
-  update(@Body() model: Dog): Dog {
-    console.log(model);
-    const dog = this.dogs.find(item => item.id === model.id);
+  @Put(':id')
+  async update(@Param('id', new ParseIntPipe()) id, @Body() model: Dog): Promise<Dog> {
+    const dog = await this.dogsService.updateById(id, model);
     if (!dog) {
       throw new BadRequestException(`dog with id=${model.id} does not exist`);
     }
-    dog.id = model.id;
-    dog.name = model.name;
-    dog.age = model.age;
     return dog;
   }
 }

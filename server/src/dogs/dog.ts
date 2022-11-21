@@ -1,11 +1,14 @@
-import { Entity, PrimaryKey } from "@mikro-orm/core"
+import { Entity, PrimaryKey, Property, types } from "@mikro-orm/core"
 
 @Entity()
 export class Dog {
     @PrimaryKey()
     id?: number
     
+    @Property()
     name: string
+
+    @Property({type: types.double})
     age: number
 }
 

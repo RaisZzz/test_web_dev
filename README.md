@@ -15,3 +15,7 @@ yarn
 ```shell
 yarn dev
 ```
+
+```
+npx mikro-orm migration:create --initial
+```
