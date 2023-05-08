@@ -1,0 +1,18 @@
+export enum Errors {
+  Unauthorized,
+  UserExist,
+  PhoneInvalid,
+  PasswordInvalid,
+  SmsNotSent,
+  SmsNotConfirmed,
+  SmsCodeInvalid,
+  Forbidden,
+  CodeNotExpired,
+  FilesCount,
+  FileType,
+  BadFields,
+  StepError,
+  Unsubscribe,
+  Deleted,
+  NotFound,
+}
